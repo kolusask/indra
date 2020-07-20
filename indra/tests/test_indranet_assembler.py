@@ -123,7 +123,7 @@ def test_to_digraph():
     assert len(digraph.nodes) == 3
     assert len(digraph.edges) == 2
     assert set([
-        stmt['stmt_type'] for stmt in digraph['a']['b']['statements']]) == {
+        stmt['stmt_type'] for stmt in digraph['a']['b']['statements'].values()]) == {
             'Activation', 'Phosphorylation', 'Inhibition', 'IncreaseAmount'}
     assert all(digraph.edges[e].get('belief', False) for e in digraph.edges)
     assert all(isinstance(digraph.edges[e]['belief'],
@@ -145,15 +145,15 @@ def test_to_signed_graph():
     assert len(signed_graph.nodes) == 3
     assert len(signed_graph.edges) == 4
     assert set([stmt['stmt_type'] for stmt in
-                signed_graph['a']['b'][0]['statements']]) == {
+                signed_graph['a']['b'][0]['statements'].values()]) == {
                     'Activation', 'IncreaseAmount'}
     assert set([stmt['stmt_type'] for stmt in
-                signed_graph['a']['b'][1]['statements']]) == {'Inhibition'}
+                signed_graph['a']['b'][1]['statements'].values()]) == {'Inhibition'}
     assert set([stmt['stmt_type'] for stmt in
-                signed_graph['b']['c'][0]['statements']]) == {
+                signed_graph['b']['c'][0]['statements'].values()]) == {
                     'Activation', 'IncreaseAmount'}
     assert set([stmt['stmt_type'] for stmt in
-                signed_graph['b']['c'][1]['statements']]) == {
+                signed_graph['b']['c'][1]['statements'].values()]) == {
                     'Inhibition', 'DecreaseAmount'}
     assert all(signed_graph.edges[e].get('belief', False) for e in
                signed_graph.edges)
