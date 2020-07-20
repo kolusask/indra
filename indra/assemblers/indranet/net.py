@@ -146,10 +146,15 @@ class IndraNet(nx.MultiDiGraph):
             if v not in G.nodes:
                 G.add_node(v, **self.nodes[v])
             # Add edges and their attributes
+            stmts = dict()
+            for d in data:
+                stmt_hash = d['stmt_hash']
+                d.pop('stmt_hash')
+                stmts[stmt_hash] = d
             if G.has_edge(u, v):
-                G[u][v]['statements'].append(data)
+                G[u][v]['statements'].update(stmts)
             else:
-                G.add_edge(u, v, statements=[data])
+                G.add_edge(u, v, statements=stmts)
         G = self._update_edge_belief(G, flattening_method)
         if weight_mapping:
             G = weight_mapping(G)
