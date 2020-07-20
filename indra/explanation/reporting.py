@@ -73,10 +73,9 @@ def stmts_from_indranet_path(path, model, signed, from_db=True, stmts=None):
                 sign = 0
             else:
                 sign = 1
-            stmt_data = model[source[0]][target[0]][sign]['statements']
+            hashes = model[source[0]][target[0]][sign]['statements'].keys()
         else:
-            stmt_data = model[source[0]][target[0]]['statements']
-        hashes = [stmt['stmt_hash'] for stmt in stmt_data]
+            hashes = model[source[0]][target[0]]['statements'].keys()
         if from_db:
             statements = get_statements_by_hash(hashes, simple_response=True)
         else:
