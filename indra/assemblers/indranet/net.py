@@ -220,10 +220,15 @@ class IndraNet(nx.MultiDiGraph):
                 continue
             else:
                 sign = sign_dict[data['stmt_type']]
+            stmts = dict()
+            for d in data:
+                stmt_hash = d['stmt_hash']
+                d.pop('stmt_hash')
+                stmts[stmt_hash] = d
             if SG.has_edge(u, v, sign):
-                SG[u][v][sign]['statements'].append(data)
+                SG[u][v][sign]['statements'].update(stmts)
             else:
-                SG.add_edge(u, v, sign, statements=[data], sign=sign)
+                SG.add_edge(u, v, sign, statements=stmts, sign=sign)
         SG = self._update_edge_belief(SG, flattening_method)
         if weight_mapping:
             SG = weight_mapping(SG)
