@@ -316,7 +316,7 @@ class IndraNet(nx.MultiDiGraph):
 
 def _simple_scorer_update(G, edge):
     evidence_list = []
-    for stmt_data in G.edges[edge]['statements']:
+    for stmt_data in G.edges[edge]['statements'].values():
         for k, v in stmt_data['source_counts'].items():
             if k in db_source_mapping:
                 s = db_source_mapping[k]
@@ -331,7 +331,7 @@ def _complementary_belief(G, edge):
     # Aggregate belief score: 1-prod(1-belief_i)
     np.seterr(all='raise')
     NP_PRECISION = 10 ** -np.finfo(np.longfloat).precision  # Numpy precision
-    belief_list = [s['belief'] for s in G.edges[edge]['statements']]
+    belief_list = [s['belief'] for s in G.edges[edge]['statements'].values()]
     try:
         ag_belief = np.longfloat(1.0) - np.prod(np.fromiter(
             map(lambda belief: np.longfloat(1.0) - belief, belief_list),
