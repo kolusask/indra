@@ -146,15 +146,15 @@ class IndraNet(nx.MultiDiGraph):
             if v not in G.nodes:
                 G.add_node(v, **self.nodes[v])
             # Add edges and their attributes
-            stmts = dict()
+            edge_dict = dict()
             for d in data:
                 stmt_hash = d['stmt_hash']
                 d.pop('stmt_hash')
-                stmts[stmt_hash] = d
+                edge_dict[stmt_hash] = d
             if G.has_edge(u, v):
-                G[u][v]['statements'].update(stmts)
+                G[u][v]['statements'].update(edge_dict)
             else:
-                G.add_edge(u, v, statements=stmts)
+                G.add_edge(u, v, statements=edge_dict)
         G = self._update_edge_belief(G, flattening_method)
         if weight_mapping:
             G = weight_mapping(G)
@@ -220,15 +220,15 @@ class IndraNet(nx.MultiDiGraph):
                 continue
             else:
                 sign = sign_dict[data['stmt_type']]
-            stmts = dict()
+            edge_dict = dict()
             for d in data:
                 stmt_hash = d['stmt_hash']
                 d.pop('stmt_hash')
-                stmts[stmt_hash] = d
+                edge_dict[stmt_hash] = d
             if SG.has_edge(u, v, sign):
-                SG[u][v][sign]['statements'].update(stmts)
+                SG[u][v][sign]['statements'].update(edge_dict)
             else:
-                SG.add_edge(u, v, sign, statements=stmts, sign=sign)
+                SG.add_edge(u, v, sign, statements=edge_dict, sign=sign)
         SG = self._update_edge_belief(SG, flattening_method)
         if weight_mapping:
             SG = weight_mapping(SG)
